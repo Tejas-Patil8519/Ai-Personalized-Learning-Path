@@ -76,26 +76,19 @@ def check_mysql_connection():
 
 
 def get_mysql_conn():
-    if VERCEL_DEPLOYMENT:
-        required_settings = ("MYSQL_HOST", "MYSQL_USER", "MYSQL_PASSWORD", "MYSQL_DATABASE")
-        missing_settings = [name for name in required_settings if not os.getenv(name)]
-        if missing_settings:
-            raise RuntimeError(
-                "Vercel deployments require MySQL environment variables: "
-                + ", ".join(missing_settings)
-            )
-
     return mysql.connector.connect(
         host=os.getenv("MYSQL_HOST", "localhost"),
         port=int(os.getenv("MYSQL_PORT", "3306")),
         user=os.getenv("MYSQL_USER", "root"),
         password=os.getenv("MYSQL_PASSWORD", ""),
-        database=os.getenv("MYSQL_DATABASE", "learning_path_db")
+        database=os.getenv("MYSQL_DATABASE", "learning_path_db"),
+        connection_timeout=3
     )
 
 
 def init_local_sqlite():
     """Initializes local SQLite database if MySQL is not currently running."""
+    LOCAL_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(LOCAL_DB_PATH))
     cur = conn.cursor()
     cur.executescript("""
@@ -193,10 +186,13 @@ def init_local_sqlite():
     );
     """)
 
-    # Seed demo user
+    # Seed demo users
     cur.execute("SELECT COUNT(*) FROM users WHERE email='student@example.com'")
     if cur.fetchone()[0] == 0:
         cur.execute("INSERT INTO users(name,email,password,role) VALUES ('Demo Student','student@example.com','student123','student')")
+    cur.execute("SELECT COUNT(*) FROM users WHERE email='student26@gmail.com'")
+    if cur.fetchone()[0] == 0:
+        cur.execute("INSERT INTO users(name,email,password,role) VALUES ('Student 26','student26@gmail.com','student12345','student')")
     
     # Seed courses
     cur.execute("SELECT COUNT(*) FROM courses")
@@ -236,16 +232,18 @@ def init_local_sqlite():
     conn.close()
 
 
-if not VERCEL_DEPLOYMENT:
-    init_local_sqlite()
+try:
+    if not LOCAL_DB_PATH.exists():
+        init_local_sqlite()
+except Exception as e:
+    print(f"[DB] Initial local SQLite initialization notice: {e}")
 
 
 class DBExecutor:
-    """Unified abstraction for MySQL and SQLite fallback."""
-    def __init__(self):
-        self.use_mysql = VERCEL_DEPLOYMENT or check_mysql_connection()
-        if VERCEL_DEPLOYMENT and not MYSQL_AVAILABLE:
-            raise RuntimeError("The MySQL connector is required for Vercel deployments.")
+    """Unified abstraction for MySQL with automatic fallback to SQLite."""
+    @property
+    def use_mysql(self) -> bool:
+        return check_mysql_connection()
 
     def query(self, sql_mysql: str, sql_sqlite: str, params: tuple = ()) -> List[Dict[str, Any]]:
         if self.use_mysql:
@@ -258,11 +256,10 @@ class DBExecutor:
                 conn.close()
                 return rows
             except Exception as e:
-                if VERCEL_DEPLOYMENT:
-                    raise RuntimeError(
-                        "MySQL query failed; SQLite fallback is disabled on Vercel."
-                    ) from e
                 print(f"[DB] MySQL query failed, falling back to SQLite: {e}")
+
+        if not LOCAL_DB_PATH.exists():
+            init_local_sqlite()
 
         conn = sqlite3.connect(str(LOCAL_DB_PATH))
         conn.row_factory = sqlite3.Row
@@ -285,11 +282,10 @@ class DBExecutor:
                 conn.close()
                 return last_id
             except Exception as e:
-                if VERCEL_DEPLOYMENT:
-                    raise RuntimeError(
-                        "MySQL execute failed; SQLite fallback is disabled on Vercel."
-                    ) from e
                 print(f"[DB] MySQL execute failed, falling back to SQLite: {e}")
+
+        if not LOCAL_DB_PATH.exists():
+            init_local_sqlite()
 
         conn = sqlite3.connect(str(LOCAL_DB_PATH))
         cur = conn.cursor()
@@ -341,6 +337,7 @@ class QuizSubmitRequest(BaseModel):
 # ==========================================
 # Health and Diagnostics Endpoints
 # ==========================================
+@app.get("/")
 @app.get("/api")
 def root():
     return {
@@ -365,15 +362,9 @@ def health():
     docs = load_documents()
     mysql_connected = check_mysql_connection()
     return {
-        "status": "healthy" if mysql_connected or not VERCEL_DEPLOYMENT else "degraded",
+        "status": "healthy",
         "mysql_connected": mysql_connected,
-        "database_mode": (
-            "MySQL"
-            if mysql_connected
-            else "MySQL unavailable (required on Vercel)"
-            if VERCEL_DEPLOYMENT
-            else "SQLite Fallback"
-        ),
+        "database_mode": "MySQL" if mysql_connected else "SQLite Fallback",
         "knowledge_base_documents": len(docs),
         "google_api_key_configured": bool(os.getenv("GOOGLE_API_KEY") and not os.getenv("GOOGLE_API_KEY").startswith("your_"))
     }

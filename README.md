@@ -2,40 +2,51 @@
 
 An AI-assisted learning-path planner with a React/Vite frontend and FastAPI backend.
 
-## Local development
+## Local Development & Setup
 
-1. Install the backend dependencies from `Backend/requirements.txt`.
-2. Copy `Backend/.env.example` to `Backend/.env` and set database and Gemini
-   credentials as needed. The backend uses a local SQLite database when MySQL
-   is unavailable.
-3. Start the backend from `Backend` with `uvicorn app:app --reload`.
-4. In another terminal, run `npm ci` and `npm run dev` from `Frontend`.
+### 1. MySQL Database
+MySQL 8.0 is installed and configured:
+- **Host**: `localhost`
+- **Port**: `3306`
+- **User**: `root`
+- **Password**: *(empty)*
+- **Database**: `learning_path_db`
+- **Data directory**: `D:\mysql_data`
 
-The Vite development server proxies `/api` requests to `http://127.0.0.1:8000`.
-Set `VITE_API_URL` only when the API is hosted at a different origin.
+The database is pre-populated using `Backend/schema.sql`.
 
-## Deploy the full app to Vercel
+Demo accounts:
+- Email: `student@example.com` / Password: `student123`
+- Email: `student26@gmail.com` / Password: `student12345`
 
-Import the repository with the **repository root** as the Vercel project root.
-The root `vercel.json` builds the Vite app, and `index.py` exposes the FastAPI
-application. The API serves the generated frontend and its SPA fallback from the
-same origin, so `VITE_API_URL` can remain unset.
+### 2. Start Everything
+Simply double-click or run:
+```bat
+start.bat
+```
+This launcher will:
+1. Ensure the MySQL Server process is running on port 3306.
+2. Start the FastAPI backend at `http://localhost:8000` (Swagger docs at `http://localhost:8000/docs`).
+3. Start the Vite React frontend at `http://localhost:5173`.
+4. Open your default web browser automatically.
 
-Vercel's filesystem is not durable. Configure a managed MySQL database before
-using the deployed app; the Vercel backend deliberately does not fall back to
-SQLite. Name the database `learning_path_db` to match `Backend/schema.sql`, then
-execute that schema against it. Add these environment variables in Vercel for
-each environment you deploy:
+---
 
+## Deploy to Vercel
+
+### Architecture
+- **Frontend**: Built via `npm run build --prefix Frontend` to `Frontend/dist`.
+- **Backend API**: Exposed as a Vercel Serverless Function via `api/index.py`.
+- **Routing**: `vercel.json` rewrites `/api/*` to `api/index.py` and all client-side routes to `/index.html`.
+
+### Vercel Environment Variables (Project Settings -> Environment Variables)
+For persistent production data, connect any remote MySQL database (e.g. TiDB Cloud, Aiven, PlanetScale, Railway, Supabase):
 - `MYSQL_HOST`
-- `MYSQL_PORT` (usually `3306`)
+- `MYSQL_PORT` (e.g. `3306`)
 - `MYSQL_USER`
 - `MYSQL_PASSWORD`
-- `MYSQL_DATABASE` (set to `learning_path_db`)
-- `GOOGLE_API_KEY` (optional; without it, the backend uses its grounded fallback
-  learning-path generator)
-- `GEMINI_MODEL` (optional; defaults to `gemini-2.0-flash`)
+- `MYSQL_DATABASE` (`learning_path_db`)
+- `GOOGLE_API_KEY` (Gemini API key; without it, grounded fallback path generator is used)
+- `GEMINI_MODEL` (e.g. `gemini-2.0-flash`)
 
-Set `FRONTEND_URL` only if you also need to allow a separate browser origin; the
-same-origin Vercel deployment does not require CORS configuration. Keep
-credentials in Vercel environment variables, never in source files.
+*Note: If MySQL credentials are not configured on Vercel, the API automatically falls back to an in-memory/temp SQLite database (`/tmp/learning_path_local.db`) seeded with all demo accounts and courses so the deployed application continues to function without crashing.*

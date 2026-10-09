@@ -123,9 +123,10 @@ CREATE TABLE IF NOT EXISTS student_progress (
 -- Seed Initial Demo Data
 -- =======================================================
 
--- Demo User
+-- Demo Users
 INSERT IGNORE INTO users (id, name, email, password, role) VALUES
-(1, 'Demo Student', 'student@example.com', 'student123', 'student');
+(1, 'Demo Student', 'student@example.com', 'student123', 'student'),
+(2, 'Student 26', 'student26@gmail.com', 'student12345', 'student');
 
 -- Demo Student Profile
 INSERT IGNORE INTO students (id, user_id, name, age, education, level, skills, interests, strengths, weaknesses, hobbies, goals, weekly_hours, preferred_style) VALUES

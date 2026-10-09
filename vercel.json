@@ -1,3 +1,15 @@
 {
-  "buildCommand": "npm ci --prefix Frontend && npm run build --prefix Frontend"
+  "version": 2,
+  "buildCommand": "npm run build --prefix Frontend",
+  "outputDirectory": "Frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

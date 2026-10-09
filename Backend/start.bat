@@ -6,11 +6,15 @@ echo   AI Personalized Learning Path - Backend Service
 echo   FastAPI + MySQL / RAG + Google AI Studio (Gemini)
 echo =======================================================
 
-where py >nul 2>nul
-if %errorlevel%==0 (
-    set PY_CMD=py
+if exist "..\.venv\Scripts\python.exe" (
+    set PY_CMD="..\.venv\Scripts\python.exe"
 ) else (
-    set PY_CMD=python
+    where py >nul 2>nul
+    if %errorlevel%==0 (
+        set PY_CMD=py
+    ) else (
+        set PY_CMD=python
+    )
 )
 
 if not exist .env (
