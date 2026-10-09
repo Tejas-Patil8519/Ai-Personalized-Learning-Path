@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 // Configure axios default headers
 axios.interceptors.request.use((config) => {
@@ -59,20 +59,27 @@ function AuthPage({ onLoginSuccess }) {
     setLoading(true);
     setError("");
 
+    const cleanedEmail = email.trim().toLowerCase();
+    const cleanedPassword = password.trim();
     try {
       if (tab === "login") {
-        const res = await axios.post(`${API_BASE}/api/auth/login`, { email, password });
+        const res = await axios.post(`${API_BASE}/api/auth/login`, { email: cleanedEmail, password: cleanedPassword });
         localStorage.setItem("learnai_token", res.data.token);
         localStorage.setItem("learnai_user", JSON.stringify(res.data.user));
         onLoginSuccess(res.data.user);
       } else {
-        const res = await axios.post(`${API_BASE}/api/auth/register`, { name, email, password });
+        const res = await axios.post(`${API_BASE}/api/auth/register`, { name, email: cleanedEmail, password: cleanedPassword });
         localStorage.setItem("learnai_token", res.data.token);
         localStorage.setItem("learnai_user", JSON.stringify(res.data.user));
         onLoginSuccess(res.data.user);
       }
     } catch (err) {
-      setError(err.response?.data?.detail || "Authentication error. Ensure the backend server is running.");
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+        return;
+      }
+
+      setError("Unable to reach the server. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
