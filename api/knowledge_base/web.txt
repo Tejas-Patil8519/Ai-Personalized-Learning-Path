@@ -1,0 +1,2 @@
+Web Development Resource
+Modern web development can start with HTML, CSS and JavaScript, then React components, state, routing and API integration. A learner should build small responsive projects and connect a frontend to a backend REST API.

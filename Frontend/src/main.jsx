@@ -74,12 +74,18 @@ function AuthPage({ onLoginSuccess }) {
         onLoginSuccess(res.data.user);
       }
     } catch (err) {
-      if (err.response?.data?.detail) {
-        setError(err.response.data.detail);
-        return;
+      console.error("Auth error:", err);
+      const serverDetail = err.response?.data?.detail;
+      const serverMessage = err.response?.data?.message;
+      if (serverDetail) {
+        setError(serverDetail);
+      } else if (serverMessage) {
+        setError(serverMessage);
+      } else if (err.response?.status) {
+        setError(`Server returned status ${err.response.status}. Please check backend logs.`);
+      } else {
+        setError("Unable to reach the server. Please check your connection and try again.");
       }
-
-      setError("Unable to reach the server. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }

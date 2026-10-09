@@ -1,0 +1,7 @@
+Data Science, Analytics, and Problem Solving Curriculum:
+Data Manipulation & Analysis: NumPy for n-dimensional array operations, vectorization, linear algebra calculations. Pandas for DataFrames, Series, reading CSV/Excel/SQL, data cleaning, handling missing values, filtering, grouping, aggregation.
+Exploratory Data Analysis (EDA): Summary statistics, correlation matrices, outlier detection, data distribution inspection.
+Data Visualization: Matplotlib and Seaborn for line plots, bar charts, scatter plots, histograms, heatmaps, interactive charts.
+SQL for Analytics: Complex queries, window functions, group by, joins (INNER, LEFT, RIGHT), aggregations, CTEs (Common Table Expressions).
+Practical Analytics Projects: Customer churn prediction, exploratory student performance analysis, sales forecasting, sentiment analysis of user reviews.
+Strengths and Weaknesses Coaching: Translating analytical curiosity into systematic hypothesis testing, overcoming hesitation with structured step-by-step problem breakdown.

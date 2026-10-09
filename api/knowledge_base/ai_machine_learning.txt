@@ -1,0 +1,8 @@
+Artificial Intelligence and Machine Learning Curriculum:
+Foundations of AI: Mathematical prerequisites include linear algebra (vectors, matrices, eigenvalues), multivariable calculus (gradients, chain rule), and probability & statistics (distributions, Bayes' theorem, hypothesis testing).
+Core Machine Learning: Supervised learning algorithms including linear regression, logistic regression, decision trees, random forests, and support vector machines. Unsupervised learning covering k-means clustering, hierarchical clustering, and principal component analysis (PCA).
+Model Evaluation and Tuning: Overfitting vs underfitting, train-test splits, k-fold cross-validation, precision, recall, F1-score, ROC-AUC curves, hyperparameter tuning with GridSearchCV.
+Deep Learning and Neural Networks: Perceptrons, multi-layer perceptrons, forward and backward propagation, loss functions (cross-entropy, MSE), activation functions (ReLU, Sigmoid, Softmax), optimizers (Adam, SGD). Convolutional Neural Networks (CNNs) for computer vision and Recurrent Neural Networks (RNNs/LSTMs) for sequential data.
+Modern Generative AI and LLMs: Transformer architecture (attention mechanisms, encoder-decoder, self-attention), pre-trained foundation models (Gemini, GPT, Claude), prompt engineering best practices, few-shot prompting, chain-of-thought reasoning.
+Retrieval Augmented Generation (RAG): Grounding LLMs with external knowledge, document chunking, embedding generation, vector databases (Chroma, FAISS, Pinecone), similarity search, prompt synthesis with retrieved context, hallucination reduction.
+AI Ethics and Production: Responsible AI principles, bias detection, rate limiting, token optimization, model deployment via FastAPI and containerization with Docker.

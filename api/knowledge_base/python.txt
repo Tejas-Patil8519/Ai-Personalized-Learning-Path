@@ -1,0 +1,2 @@
+Python Learning Resource
+Python basics include variables, data types, conditions, loops, functions, lists, dictionaries, modules and file handling. Beginners should practice small programs before moving to object-oriented programming and libraries such as pandas.
