@@ -1,0 +1,2 @@
+AI Learning Resource
+Artificial intelligence learning can progress from Python and mathematics to machine learning, model evaluation, neural networks, natural language processing and generative AI. Practice with small datasets and mini projects.

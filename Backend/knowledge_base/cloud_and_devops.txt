@@ -1,0 +1,6 @@
+Cloud, DevOps and Project Deployment Curriculum:
+Version Control with Git: Repository initialization, branch workflows (feature branches, main), commits, pull requests, resolving merge conflicts, GitHub collaboration.
+Containerization with Docker: Dockerfile creation, multi-stage builds, docker-compose for orchestrating frontend, backend, and MySQL database containers.
+Cloud Deployment: Hosting options for full-stack apps (Render, Vercel, Railway, AWS EC2/ECS, Google Cloud Run), environment variable secrets management.
+CI/CD Pipelines: Automated linting, automated unit testing with GitHub Actions, deployment automation.
+Database Hosting: Managed MySQL on AWS RDS or PlanetScale, database backups, connection pooling, production security.

@@ -1,0 +1,9 @@
+Python Programming and Backend Engineering Curriculum:
+Python Foundations: Variables, primitive data types (integers, floats, strings, booleans), control structures (if-elif-else, while, for loops), list comprehensions, dictionary comprehensions.
+Data Structures: Lists, tuples, sets, dictionaries, queues, stacks, heaps, time and space complexity (Big-O notation).
+Object-Oriented Programming (OOP): Classes, objects, attributes, methods, inheritance, polymorphism, encapsulation, abstraction, magic methods (__init__, __str__, __repr__), dataclasses.
+Advanced Python Concepts: Decorators, generators, iterators, context managers (with statement), exceptions and custom error handling, type hinting and Pydantic models.
+File I/O and Concurrency: Reading/writing JSON, CSV, text files, asynchronous programming with asyncio, async/await, multi-threading vs multi-processing.
+Backend API Development: FastAPI framework, route definitions, path and query parameters, request validation, Pydantic schemas, dependency injection, CORS middleware, JWT authentication.
+Database Integration: Relational databases with MySQL, SQL queries, connections, connection pooling, ORM patterns, migrations, prepared statements to prevent SQL injection.
+Testing and Code Quality: Unit testing with pytest, mock objects, PEP-8 standards, linting with flake8/black, virtual environments (venv), package dependency management with pip and requirements.txt.

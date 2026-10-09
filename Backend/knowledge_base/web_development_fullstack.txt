@@ -1,0 +1,8 @@
+Full-Stack Web Development Curriculum:
+Frontend Core: Semantic HTML5, CSS3, modern layouts with Flexbox and CSS Grid, responsive design with media queries, CSS variables, transitions, and keyframe animations.
+Modern JavaScript (ES6+): Arrow functions, destructuring, template literals, spread/rest operators, promises, async/await, Fetch API, DOM manipulation, modular JS imports/exports.
+React Ecosystem: Component architecture, JSX syntax, Props, State (useState), Side effects (useEffect), Context API for global state, custom hooks, React Router for single page application (SPA) routing.
+Modern UI/UX Best Practices: Clean visual hierarchy, typography (Inter, Outfit), sleek dark/light color schemes, accessible form validation, loading states, skeleton loaders, error boundaries.
+RESTful API Communication: Axios / Fetch client, HTTP methods (GET, POST, PUT, DELETE), status codes (200, 201, 400, 401, 404, 500), JSON serialization and deserialization, token authentication (Bearer JWT).
+Build Tools & Bundlers: Vite build system, hot module replacement (HMR), environment variables (.env), asset management, production bundle optimization.
+Full-Stack Integration: Connecting React frontend with FastAPI or Express backend, solving Cross-Origin Resource Sharing (CORS), handling async API errors gracefully with fallback UI.
