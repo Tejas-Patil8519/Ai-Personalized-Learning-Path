@@ -34,6 +34,13 @@ This launcher will:
 
 ## Deploy to Vercel
 
+### Vercel Project Settings
+Set **Root Directory** to the repository root (`.`), not `Frontend`. The API function and `vercel.json` are at the repository root, while the frontend build is run from the `Frontend` subdirectory. Set the install command to `cd Frontend && npm ci`, the build command to `npm run build --prefix Frontend`, and the output directory to `Frontend/dist`.
+
+If the deployment log looks for `Frontend/Frontend/package.json`, the Vercel project's Root Directory is set to `Frontend` while the build command also includes the `Frontend` prefix. Update the Root Directory in **Project Settings -> Build and Deployment** to the repository root, then redeploy.
+
+The frontend sends API requests to the same Vercel domain under `/api`; do not set `VITE_API_URL` to an external backend URL.
+
 ### Architecture
 - **Frontend**: Built via `npm run build --prefix Frontend` to `Frontend/dist`.
 - **Backend API**: Exposed as a Vercel Serverless Function via `api/index.py`.
